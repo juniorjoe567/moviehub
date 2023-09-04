@@ -1,0 +1,25 @@
+.landingImage{
+    height:600px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: url("https://assets1.ignimgs.com/thumbs/userUploaded/2021/10/16/whyflashpointistheperfectrebootforthedceu36190303blogrollflash-1634416486685.jpg");
+    padding-left: 10%;
+ }
+
+ .MuiPaginationItem-page,.MuiPaginationItem-textSecondary {
+   color: red !important;
+ }
+
+ .css-19micn4-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+   background-color: white !important;
+ }
+
+ .MuiPagination-root{
+   display: flex !important;
+   justify-content: center !important;
+ }
+
+ .MuiTypography-body1{
+   color: wheat !important;
+ }
