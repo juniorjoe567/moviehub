@@ -1,0 +1,3 @@
+export const ADD_WATCHED_ITEM = "ADD_ITEM";
+export const DELETE_WATCHED_ITEM = "DELETE_ITEM";
+export const ADD_TO_WILL_WATCH = "ADD_TO_WILL_WATCH";
