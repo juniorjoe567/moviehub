@@ -4,10 +4,12 @@ import "./site.css";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { connect } from "react-redux";
 import { useSelector, useDispatch } from "react-redux";
 import { addToDataArray } from "./actions/watchedactions";
 import { addToWillWatchDataArray } from "./actions/willwatchActions";
+import { auth, db } from "./firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export function Home(props) {
   const [moviesList, setMoviesList] = useState([]);
@@ -15,12 +17,22 @@ export function Home(props) {
   const [bgImage, setBgImage] = useState("");
   const [overview, setOverview] = useState("");
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
-  const state = useSelector((state) => state);
+  //const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    refreshList(1);
+    const unsub = auth.onAuthStateChanged((authObj) => {
+      unsub();
+      if (authObj) {
+        // logged in, use authObj
+        refreshList(1);
+      } else {
+        // not logged in
+        navigate("/Login");
+      }
+    });
   }, []);
 
   async function refreshList(page) {
@@ -59,15 +71,33 @@ export function Home(props) {
       return mov.id == event.target.value;
     });
 
-    moviesSelected.map((movi) => {
+    moviesSelected.map(async (movi) => {
+      const { uid, displayName, photoURL } = auth.currentUser;
+
       if (selectedOption.text.includes("Watched")) {
-        dispatch(addToDataArray(movi));
+        //dispatch(addToDataArray(movi));
+
+        await addDoc(collection(db, "watchedmovies"), {
+          movieId: movi.id,
+          poster_path: movi.poster_path,
+          release_date: movi.release_date,
+          original_title: movi.original_title,
+          createdAt: serverTimestamp(),
+          uid,
+        });
         //props.addToDataArray(movi);
         //console.log(movi);
       } else {
-        dispatch(addToWillWatchDataArray(movi));
-        //props.addToWillWatch(movi);
-        //console.log("willch");
+        //call redux to add to list
+        //dispatch(addToWillWatchDataArray(movi));
+        await addDoc(collection(db, "moviestowatch"), {
+          movieId: movi.id,
+          poster_path: movi.poster_path,
+          release_date: movi.release_date,
+          original_title: movi.original_title,
+          createdAt: serverTimestamp(),
+          uid,
+        });
       }
     });
   };

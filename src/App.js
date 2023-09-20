@@ -1,25 +1,57 @@
 import logo from "./logo.svg";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Movie from "./Movie";
 import { Home } from "./Home";
 import { Watched } from "./Watched";
 import { WillWatch } from "./WillWatch";
+import { Register } from "./Register";
+import { Login } from "./Login";
 import { Provider } from "react-redux";
 import store from "./store";
+
+//firebase
+import { auth } from "./firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   NavLink,
+  Link,
+  useNavigate,
+  Navigate,
 } from "react-router-dom";
 
 function App() {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
+  //const [value, setValue] = useState("");
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
   const watchedMovies = [];
   const WillWatchMovies = [];
+
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then((data) => {
+      navigate("/home");
+      //setValue(data.user.email);
+      //localStorage.setItem("email", data.user.email);
+    });
+  };
+
+  useEffect(() => {
+    //setValue(localStorage.getItem("email"));
+  });
+
+  const signOut = () => {
+    auth.signOut();
+    navigate("/Login");
+  };
 
   //function to add to array
   const addNumberToArray = (newNumber) => {
@@ -31,7 +63,10 @@ function App() {
   };
   return (
     <Provider store={store}>
-      <div className="container-fluid">
+      <div
+        className="container-fluid body"
+        style={{ paddingRight: "0px", paddingLeft: "0px" }}
+      >
         {/* <main className="container">
         <AppNavbar/>
         <About /> 
@@ -41,8 +76,14 @@ function App() {
        <Contact />
      </main> */}
 
-        <nav className="navbar navbar-expand-lg">
-          <div className="container-fluid">
+        <nav
+          className="navbar navbar-expand-lg"
+          style={{ background: "white" }}
+        >
+          <div
+            className="container-fluid"
+            style={{ paddingRight: "10px", paddingLeft: "10px" }}
+          >
             <a className="navbar-brand" href="#">
               <img
                 src="./material_ui.svg"
@@ -50,6 +91,9 @@ function App() {
                 width="30"
                 height="24"
               />
+              <span style={{ marginLeft: "10px" }}>
+                <strong>MovieHub</strong>
+              </span>
             </a>
 
             <button
@@ -75,21 +119,50 @@ function App() {
         <li className="nav-item">
           <a className="nav-link active" aria-current="page" href="#">Projects</a>
         </li> */}
-                <li className="nav-item m-1">
-                  <NavLink className="" to="/home">
-                    Now Showing
-                  </NavLink>
-                </li>
-                <li className="nav-item m-1" style={{ marginRight: "10px" }}>
-                  <NavLink className="" to="/willwatch">
-                    To Watch
-                  </NavLink>
-                </li>
-                <li className="nav-item m-1" style={{ marginRight: "10px" }}>
-                  <NavLink className="" to="/watched">
-                    Watched
-                  </NavLink>
-                </li>
+                {user ? (
+                  <>
+                    <li className="nav-item m-1">
+                      <Link className="" to="/home">
+                        Now Showing
+                      </Link>
+                    </li>
+                    <li
+                      className="nav-item m-1"
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Link className="" to="/willwatch">
+                        To Watch
+                      </Link>
+                    </li>
+                    <li
+                      className="nav-item m-1"
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Link className="" to="/watched">
+                        Watched
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <span></span>
+                )}
+
+                {user ? (
+                  <li className="nav-item m-1">
+                    <Link className="" onClick={signOut} to="/Login">
+                      Sign out
+                    </Link>
+                  </li>
+                ) : (
+                  <>
+                    {/* <li className="nav-item m-1">
+                      <NavLink className="" onClick={googleSignIn}>
+                        <img width={150} src={"./googlebtn.png"} />
+                      </NavLink>
+                    </li> */}
+                  </>
+                )}
+
                 {/* <li className="nav-item">
           <a className="nav-link" href="#">Link</a>
         </li> */}
@@ -110,7 +183,7 @@ function App() {
               </ul>
 
               <form className="d-flex" role="search">
-                <input
+                {/* <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
@@ -123,7 +196,28 @@ function App() {
                   style={{ borderRadius: "20px" }}
                 >
                   Search
-                </button>
+                </button> */}
+                {user ? (
+                  <span>{user.email}</span>
+                ) : (
+                  <>
+                    <NavLink
+                      className=""
+                      to="/Register"
+                      style={{ marginRight: "20px" }}
+                    >
+                      Create Account
+                    </NavLink>
+
+                    <NavLink
+                      className=""
+                      to="/Login"
+                      style={{ marginRight: "20px" }}
+                    >
+                      Login
+                    </NavLink>
+                  </>
+                )}
               </form>
             </div>
           </div>
@@ -139,14 +233,17 @@ function App() {
               />
             }
           />
-          <Route
-            path="/watched"
-            element={<Watched watchedMovies={watchedMovies} />}
-          />
-          <Route
-            path="/willwatch"
-            element={<WillWatch WillWatchMovies={WillWatchMovies} />}
-          />
+          <Route path="/watched" element={<Watched />} />
+          <Route path="/willwatch" element={<WillWatch />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
+          {/* <Route exact path='/about' element={<About/>}/>
+      <Route path='/projects' element={<Projects/>}/>
+      <Route path='/skills' element={<Skills/>}/>
+      <Route path='/contact' element={<Contact/>}/>
+      <Route path="/" element={<Navigate to="/about" />} /> */}
+
+          <Route path="/" element={<Navigate to="/home" />} />
         </Routes>
       </div>
     </Provider>

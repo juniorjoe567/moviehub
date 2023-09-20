@@ -12,12 +12,21 @@ code {
     monospace;
 }
 
-*{
-  background: #111827;
-  color:#89909c;
+.body{
   
+  /* background: #111827;
+  color:#89909c;
+   */
 }
 
 a{
   text-decoration: none !important;
+}
+
+.outerbackground{
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 0, 0.5),
+    rgba(0, 0, 255, 0.5)
+  ), url("../public/bakground-image.jpg");
 }
