@@ -77,7 +77,7 @@ function App() {
      </main> */}
 
         <nav
-          className="navbar navbar-expand-lg"
+          className="navbar navbar-expand-lg shadow-sm bg-white rounded"
           style={{ background: "white" }}
         >
           <div

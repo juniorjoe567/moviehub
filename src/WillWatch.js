@@ -62,7 +62,10 @@ export function WillWatch() {
 
   return (
     <div>
-      <div className="row" style={{ paddingLeft: "8px", paddingRight: "8PX" }}>
+      <div
+        className="row"
+        style={{ paddingLeft: "15px", paddingRight: "15px" }}
+      >
         {
           // JSON.stringify(moviesList[1])
         }

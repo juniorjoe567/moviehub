@@ -129,7 +129,10 @@ export function Home(props) {
           <div style={{ color: "white", fontSize: "13px" }}></div>
         </div>
       </div>
-      <div className="row" style={{ paddingLeft: "8px", paddingRight: "8PX" }}>
+      <div
+        className="row"
+        style={{ paddingLeft: "15px", paddingRight: "15px" }}
+      >
         {moviesList.map((movie) => (
           <div
             key={movie.id}
