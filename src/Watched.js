@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { auth, db } from "./firebase";
 import { useNavigate } from "react-router-dom";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import {
   collection,
   addDoc,
@@ -68,36 +70,41 @@ export function Watched() {
 
   return (
     <div>
-      <div className="row" style={{ marginTop: "10px" }}>
+      <div className="row" style={{ paddingLeft: "8px", paddingRight: "8PX" }}>
         {
           // JSON.stringify(moviesList[1])
         }
-        {/* {console.log(moviesList)} */}
+        {}
 
         {moviesList.map((movie) => (
-          <div key={movie.movieId} className="col-md-2 col-6">
-            <img
-              width={220}
-              src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}
-            />
-            <br />
-            <b style={{ color: "#ffcfb8" }}>{movie.original_title}</b>
-            <p style={{ color: "rgb(155, 155, 155)" }}>
-              Released: {movie.release_date}
-            </p>
-            <span>
-              <button
-                className="btn btn-danger"
-                onClick={() => deleteMovie(movie.id)}
-              >
-                Delete
-              </button>
-            </span>
-            {/* <select className="form-select" aria-label="Default select example" onChange={changeLanguage}>
-                        <option value={movie.id}>Now Watching</option>
-                        <option value={movie.id}>Watched</option>
-                        <option value={movie.id}>Won't Watch</option> 
-                        </select> */}
+          <div
+            key={movie.movieId}
+            className="col-sm-2 col-6 mb-0 mt-2"
+            style={{ width: "19% !important" }}
+          >
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Card style={{ width: "18rem" }}>
+                <Card.Img
+                  variant="top"
+                  src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+                />
+                <Card.Body>
+                  {/* <Card.Title style={{ color: "#75020c" }}>
+                    {movie.original_title}
+                  </Card.Title> */}
+                  <Card.Text style={{ color: "rgb(155, 155, 155)" }}>
+                    Released: {movie.release_date}
+                  </Card.Text>
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => deleteMovie(movie.id)}
+                  >
+                    Delete
+                  </button>
+                  {/* <Button variant="primary">Go somewhere</Button> */}
+                </Card.Body>
+              </Card>
+            </div>
           </div>
         ))}
       </div>

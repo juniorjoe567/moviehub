@@ -10,6 +10,8 @@ import { addToWillWatchDataArray } from "./actions/willwatchActions";
 import { auth, db } from "./firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 export function Home(props) {
   const [moviesList, setMoviesList] = useState([]);
@@ -99,6 +101,8 @@ export function Home(props) {
           uid,
         });
       }
+
+      alert("Successfully Added");
     });
   };
 
@@ -125,27 +129,40 @@ export function Home(props) {
           <div style={{ color: "white", fontSize: "13px" }}></div>
         </div>
       </div>
-      <div className="row" style={{ marginTop: "10px" }}>
+      <div className="row" style={{ paddingLeft: "8px", paddingRight: "8PX" }}>
         {moviesList.map((movie) => (
-          <div key={movie.id} className="col-sm-2  col-6">
-            <img
-              width={220}
-              src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-            />
-            <br />
-            <b style={{ color: "#ffcfb8" }}>{movie.original_title}</b>
-            <p style={{ color: "rgb(155, 155, 155)" }}>
-              Released: {movie.release_date}
-            </p>
-            <select
-              className="form-select"
-              aria-label="Default select example"
-              onChange={changeLanguage}
-            >
-              <option value={movie.id}>Now Watching</option>
-              <option value={movie.id}>Watched</option>
-              <option value={movie.id}>Will Watch</option>
-            </select>
+          <div
+            key={movie.id}
+            className="col-sm-2 col-6 mb-0 mt-2"
+            style={{ width: "19% !important" }}
+          >
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Card style={{ width: "18rem" }}>
+                <Card.Img
+                  variant="top"
+                  src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+                />
+                <Card.Body>
+                  {/* <Card.Title style={{ color: "#75020c" }}>
+                    {movie.original_title}
+                  </Card.Title> */}
+                  <Card.Text style={{ color: "rgb(155, 155, 155)" }}>
+                    Released: {movie.release_date}
+                  </Card.Text>
+
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    onChange={changeLanguage}
+                  >
+                    <option value={movie.id}>-Add to Library-</option>
+                    <option value={movie.id}>Watched</option>
+                    <option value={movie.id}>Will Watch</option>
+                  </select>
+                  {/* <Button variant="primary">Go somewhere</Button> */}
+                </Card.Body>
+              </Card>
+            </div>
           </div>
         ))}
       </div>
