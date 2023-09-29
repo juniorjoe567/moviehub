@@ -92,7 +92,7 @@ function App() {
                 height="24"
               />
               <span style={{ marginLeft: "10px" }}>
-                <strong>MovieHub</strong>
+                <strong>MuvyHub</strong>
               </span>
             </a>
 

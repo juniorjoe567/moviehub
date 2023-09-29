@@ -75,7 +75,7 @@ export function Watched() {
         {/* {console.log(moviesList)} */}
 
         {moviesList.map((movie) => (
-          <div key={movie.movieId} className="col-sm-2">
+          <div key={movie.movieId} className="col-md-2 col-6">
             <img
               width={220}
               src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}

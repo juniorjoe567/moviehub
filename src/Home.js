@@ -127,7 +127,7 @@ export function Home(props) {
       </div>
       <div className="row" style={{ marginTop: "10px" }}>
         {moviesList.map((movie) => (
-          <div key={movie.id} className="col-sm-2">
+          <div key={movie.id} className="col-sm-2  col-6">
             <img
               width={220}
               src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
